@@ -2,7 +2,9 @@
 
 """Calculates the shape of a matrix"""
 
+
 def matrix_shape(matrix):
+    """Checks matrix and returns the shape"""
     if not matrix:
         return []
 
