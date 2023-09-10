@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 """Function that calculates the shape of a matrix"""
-import numpy as np
 
 
 def np_shape(matrix):
+    import numpy as np
     """Find the shape of a matrix"""
     shape = np.shape(matrix)
     return shape
