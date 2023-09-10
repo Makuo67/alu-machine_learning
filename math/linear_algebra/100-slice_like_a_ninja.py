@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Function that slices a matrix along specific axes"""
 
-import numpy as np
-
 
 def np_slice(matrix, axes={}):
     """Function"""
+    import numpy as np
     slices = [slice(None)] * matrix.ndim
 
     # Update the slice objects for the specified axes
