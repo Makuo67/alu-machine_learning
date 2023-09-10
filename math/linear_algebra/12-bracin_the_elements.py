@@ -3,9 +3,6 @@
 """Function that performs element-wise addition, subtraction, multiplication, and division"""
 
 
-import numpy as np
-
-
 def np_elementwise(mat1, mat2):
     """Performs some arithmetic"""
     if mat1.shape != mat2.shape:
