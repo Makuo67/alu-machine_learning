@@ -4,8 +4,8 @@
 
 
 def np_shape(matrix):
-    import numpy as np
     """Find the shape of a matrix"""
+    import numpy as np
     shape = np.shape(matrix)
     return shape
 
