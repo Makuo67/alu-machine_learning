@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 """FUnction that adds two matrices"""
-import numpy as np
 
 
 def add_matrices(mat1, mat2):
-    # Check if mat1 and mat2 have the same shape
+    """Check if mat1 and mat2 have the same shape"""
+    import numpy as np
     if mat1.shape != mat2.shape:
         return None
 
