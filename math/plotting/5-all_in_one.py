@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import matplotlib.gridspec as gridspec
 y0 = np.arange(0, 11) ** 3
 
 mean = [69, 0]
@@ -25,6 +25,7 @@ np.random.seed(5)
 student_grades = np.random.normal(68, 15, 50)
 
 fig, axs = plt.subplots(3, 2, figsize=(10, 10))
+gs = gridspec.GridSpec(3, 2, width_ratios=[1, 2])
 # Plot y0 in the first subplot
 axs[0, 0].plot(y0, color='red')
 axs[0, 0].tick_params(labelsize='x-small')
