@@ -12,7 +12,7 @@ def summation_i_squared(n):
         return 1
     
     # Recursive case: sum i^2 from 1 to n
-    return n**2 + summation_i_squared(n-1)
+    return (n**2 + summation_i_squared(n-1))
 
 # n = 5
 # print(summation_i_squared(n))
