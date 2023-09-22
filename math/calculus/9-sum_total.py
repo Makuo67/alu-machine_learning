@@ -13,7 +13,3 @@ def summation_i_squared(n):
         return 1
     # Sum of natural numbers
     return (n*(n+1)*(2*n+1))/6
-
-
-n = 5
-print(summation_i_squared(n))
