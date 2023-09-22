@@ -4,18 +4,13 @@
 
 def poly_derivative(poly):
     """Derivative"""
-    if not isinstance(poly, list) or not all(isinstance(coeff, (int, float)) for coeff in poly):
-        # Check if poly is a list of valid coefficients
-        return None
-
-    if len(poly) < 2:
-        # A polynomial of degree less than 1 has a derivative of 0
-        return [0]
 
     derivative = []
-    for power, coeff in enumerate(poly[1:], start=1):
-        # Calculate the derivative coefficient for each term
-        derivative_coeff = coeff * power
-        derivative.append(derivative_coeff)
+    if not isinstance(poly, list) or len(poly) == 0:
+        return None
+    if len(poly) == 1:
+        return [0]
+    for i in range(len(poly)-1, 0, -1):
 
-    return derivative
+        derivative.append(poly[i]*i)
+    return derivative[::-1]
