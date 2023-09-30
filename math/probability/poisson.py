@@ -7,6 +7,9 @@ class Poisson:
 
     def __init__(self, data=None, lambtha=1.):
         """Init"""
+        self.E = 2.7182818285
+        self.PI = 3.1415926536
+
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
@@ -19,22 +22,42 @@ class Poisson:
                 raise ValueError("data must contain multiple values")
             self.lambtha = float(sum(data) / len(data))
 
+    def factorial(self, k):
+        """ Find factorial of a number """
+        result = 1
+        for i in range(1, k+1):
+            result *= i
+        return result
+
     def pmf(self, k):
-        """PMF function calc"""
-        k = int(k)  # Convert k to an integer if it is not
-        if k < 0:  # k is out of range
+        """ Calculates the value of the PMF for a given number of "successes."
+
+        Args:
+            k (int): number of "successes"
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
             return 0
 
-        # Calculating factorial of k manually
-        factorial_k = 1
-        for i in range(1, k + 1):
-            factorial_k *= i
+        p = (self.lambtha ** k) * (self.E ** -self.lambtha) / self.factorial(k)
+        return p
 
-        # Calculating e^(-lambtha) manually
-        exp_neg_lambtha = 1
-        term = 1
-        for i in range(1, 10):  # Summing up to 10 terms
-            term *= -self.lambtha / i  # each term is x^i/i! for Taylor series of e^x
-            exp_neg_lambtha += term
+    def cdf(self, k):
+        """Calculates the value of the CDF for a given number of "successes."
 
-        return (exp_neg_lambtha * (self.lambtha ** k)) / factorial_k
+        Args:
+            k (int): is the number of successes.
+        """
+
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
+            return 0
+
+        def p(k):
+
+            p = (self.lambtha ** k) * (self.E ** -
+                                       self.lambtha) / self.factorial(k)
+            return p
+        return sum([p(k) for k in range(0, k+1)])
