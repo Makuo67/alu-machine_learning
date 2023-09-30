@@ -2,9 +2,6 @@
 """Poisson distribution"""
 
 
-import math  # Needed for exp and factorial
-
-
 class Poisson:
     def __init__(self, data=None, lambtha=1.):
         if data is None:
