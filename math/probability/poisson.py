@@ -20,9 +20,28 @@ class Poisson:
                 raise ValueError("data must contain multiple values")
             self.lambtha = float(sum(data) / len(data))
 
+    def factorial(self, n):
+        """Factorial"""
+        if n == 0 or n == 1:
+            return 1
+        else:
+            return n * self.factorial(n - 1)
+
+    def exp(self, x, terms=10):
+        """Calculating exponential using the Taylor Series expansion"""
+        result = 1.0  # 0th term
+        power = 1.0  # x^0 = 1 initially
+        factorial = 1.0  # 0! = 1 initially
+        for i in range(1, terms):
+            power *= x  # x^i
+            factorial *= i  # i!
+            result += power / factorial  # Summing the series
+        return result
+
     def pmf(self, k):
-        """Pmf of poisson distribution"""
+        """PMF"""
         k = int(k)  # Convert k to an integer if it is not
         if k < 0:  # k is out of range
             return 0
-        return (math.exp(-self.lambtha) * (self.lambtha ** k)) / math.factorial(k)
+        # Calculating PMF using manually implemented exp and factorial functions
+        return (self.exp(-self.lambtha) * (self.lambtha ** k)) / self.factorial(k)
