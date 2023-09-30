@@ -21,6 +21,7 @@ class Poisson:
             self.lambtha = float(sum(data) / len(data))
 
     def pmf(self, k):
+        """Pmf of poisson distribution"""
         k = int(k)  # Convert k to an integer if it is not
         if k < 0:  # k is out of range
             return 0
