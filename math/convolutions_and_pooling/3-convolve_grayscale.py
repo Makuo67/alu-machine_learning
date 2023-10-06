@@ -28,7 +28,7 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     else:
         ph, pw = padding
 
-    # Calculate the dimensions of the output after padding and considering stride
+    # Dimensions of the output after padding and considering stride
     new_h = (h + 2 * ph - kh) // sh + 1
     new_w = (w + 2 * pw - kw) // sw + 1
 
