@@ -2,12 +2,13 @@
 """ Performs convolution on grey scale images"""
 import numpy as np
 
+
 def convolve_grayscale_valid(images, kernel):
     """Function to convolve the image"""
     m, h, w = images.shape
     kh, kw = kernel.shape
 
-    #Calculate the output image dimensions
+    # Calculate the output image dimensions
     oh = h - kh + 1
     ow = w - kw + 1
 
