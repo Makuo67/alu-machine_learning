@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def convolve_grayscale_padding(images, kernel, padding):
     """ Function to perform convolution with custom padding """
 
@@ -11,8 +12,8 @@ def convolve_grayscale_padding(images, kernel, padding):
         m, h, w, _ = images.shape
         # Convert RGB to grayscale
         images = (0.2989 * images[:, :, :, 0] +
-                0.5870 * images[:, :, :, 1] +
-                0.1140 * images[:, :, :, 2])
+                  0.5870 * images[:, :, :, 1] +
+                  0.1140 * images[:, :, :, 2])
     else:
         m, h, w = images.shape
 
