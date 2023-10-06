@@ -5,7 +5,7 @@ import numpy as np
 
 def convolve_grayscale_valid(images, kernel):
     """Function to convolve the image"""
-    m, h, w, _ = images.shape
+    m, h, w, z = images.shape
     kh, kw = kernel.shape
     
     # Convert RGB to grayscale
