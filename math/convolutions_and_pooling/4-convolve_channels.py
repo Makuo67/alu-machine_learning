@@ -8,14 +8,8 @@ import numpy as np
 def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     """Function to perform convolution with channels"""
 
-    if images.ndim == 4:
-        m, h, w, _ = images.shape
-        # Convert RGB to grayscale
-        images = (0.2989 * images[:, :, :, 0] +
-                  0.5870 * images[:, :, :, 1] +
-                  0.1140 * images[:, :, :, 2])
-    else:
-        m, h, w = images.shape
+
+    m, h, w, c = images.shape
 
     kh, kw, kc = kernel.shape
     sh, sw = stride
@@ -38,7 +32,8 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     new_w = (w + 2 * pw - kw) // sw + 1
 
     # Pad the images
-    padded = np.pad(images, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant')
+    padded = np.pad(images, (
+        (0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant')
 
     # Initialize the output array
     output = np.zeros((m, new_h, new_w))
