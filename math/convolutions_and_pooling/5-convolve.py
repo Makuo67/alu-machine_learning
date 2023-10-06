@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convolution with Channels"""
+"""Multiple Kernel Convolution"""
 
 
 import numpy as np
