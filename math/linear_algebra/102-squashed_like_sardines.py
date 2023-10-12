@@ -9,6 +9,10 @@ def cat_matrices(mat1, mat2, axis=0):
     if not isinstance(mat1, list) or not isinstance(mat2, list):
         return None
 
+     # If the depth of the two matrices are different, return None
+    if isinstance(mat1[0], list) != isinstance(mat2[0], list):
+        return None
+
     # When axis is 0, concatenate the two matrices directly
     if axis == 0:
         return mat1 + mat2
