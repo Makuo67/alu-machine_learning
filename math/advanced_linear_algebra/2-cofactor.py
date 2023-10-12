@@ -3,7 +3,7 @@
 
 
 def determinant(mat):
-    """Det"""
+    """Function to find determinant"""
     if len(mat) == 0:
         return 1
     if len(mat) == 1:
