@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-
-"""Function that concatenates two matrices along a specific axis"""
+"""Function that slices a matrix along specific axes"""
 
 
 def cat_matrices(mat1, mat2, axis=0):
     """Concatenate two matrices along a specific axis."""
+
+    # Base case: if one of the matrices is not a list, return None
+    if not isinstance(mat1, list) or not isinstance(mat2, list):
+        return None
 
     # Base case for 1D list (or the deepest dimension in multi-D lists)
     if type(mat1[0]) not in [list, tuple] and axis == 0:
