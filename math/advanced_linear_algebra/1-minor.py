@@ -5,6 +5,7 @@
 def minor(matrix):
     """Helper function to compute determinant"""
     def determinant(mat):
+        """Det"""
         if len(mat) == 0:
             return 1
         if len(mat) == 1:
