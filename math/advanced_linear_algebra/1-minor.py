@@ -22,7 +22,9 @@ def minor(matrix):
 
     # Check if matrix is square and non-empty
     n = len(matrix)
-    if n == 0 or not all(len(row) == n for row in matrix):
+    if n == 0:
+        raise ValueError("matrix must be a list of lists")
+    if not all(len(row) == n for row in matrix):
         raise ValueError("matrix must be a non-empty square matrix")
 
     # Compute minor matrix
