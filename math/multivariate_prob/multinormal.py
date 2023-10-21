@@ -22,21 +22,17 @@ class MultiNormal:
         self.cov = np.dot(deviation, deviation.T) / (n - 1)
 
     def pdf(self, x):
-        """ Calculate the PDF at a data point """
         if not isinstance(x, np.ndarray):
             raise TypeError("x must be a numpy.ndarray")
+        d = self.cov.shape[0]
+        if len(x.shape) != 2 or x.shape[1] != 1 or x.shape[0] != d:
+            raise ValueError(f"x must have the shape ({d}, 1)")
 
-        d = self.mean.shape[0]
-        if x.shape != (d, 1):
-            raise ValueError("x must have the shape ({}, 1)".format(d))
+        # Compute terms for PDF formula
+        term1 = 1 / ((2 * np.pi) ** (d / 2) * np.linalg.det(self.cov) ** 0.5)
 
-        # Compute the PDF of multivariate normal distribution
-        cov_det = np.linalg.det(self.cov)
-        cov_inv = np.linalg.inv(self.cov)
-        mahalanobis = np.dot(
-            np.dot((x - self.mean).T, cov_inv), (x - self.mean))
+        # To ensure more accurate matrix inversion, we can use the pinv (pseudo-inverse) function
+        inv_cov = np.linalg.pinv(self.cov)
+        term2 = np.exp(-0.5 * (x - self.mean).T @ inv_cov @ (x - self.mean))
 
-        term1 = 1 / (np.power((2 * np.pi), d/2) * np.sqrt(cov_det))
-        term2 = np.exp(-0.5 * mahalanobis)
-
-        return term1 * term2
+        return float(term1 * term2)
