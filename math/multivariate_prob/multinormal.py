@@ -28,7 +28,7 @@ class MultiNormal:
 
         d = self.mean.shape[0]
         if x.shape != (d, 1):
-            raise ValueError(f"x must have the shape ({d}, 1)")
+            raise ValueError("x must have the shape ({}, 1)".format(d))
 
         # Compute the PDF of multivariate normal distribution
         inv_cov = np.linalg.inv(self.cov)
