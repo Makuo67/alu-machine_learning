@@ -46,11 +46,9 @@ class MultiNormal:
         tau = np.pi * 2
         determinant = np.linalg.det(self.cov)
         x_centered = x - self.mean
-        probability_density = np.exp(
-            -0.5 *
-            x_centered.T @
-            np.linalg.inv(self.cov) @
-            x_centered
-        ) / np.sqrt(tau ** d * determinant)
+        # Using np.linalg.solve() for more stability
+        exp_term = np.dot(x_centered.T, np.linalg.solve(self.cov, x_centered))
+        probability_density = np.exp(-0.5 * exp_term) / \
+            np.sqrt(tau ** d * determinant)
 
         return np.asscalar(probability_density)
