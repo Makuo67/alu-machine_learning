@@ -38,4 +38,4 @@ class MultiNormal:
         diff = x - self.mean
         term2 = np.exp(-0.5 * np.dot(diff.T, np.dot(inv_cov, diff)))
 
-        return float("{:.18f}".format(term1 * term2[0, 0]))
+        return term1 * term2[0, 0]
