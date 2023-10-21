@@ -31,11 +31,23 @@ class MultiNormal:
             raise ValueError("x must have the shape ({}, 1)".format(d))
 
         # Compute the PDF of multivariate normal distribution
-        inv_cov = np.linalg.inv(self.cov)
-        det_cov = np.linalg.det(self.cov)
+        cov_det = np.linalg.det(self.cov)
+        cov_inv = np.linalg.inv(self.cov)
+        mahalanobis = np.dot(
+            np.dot((x - self.mean).T, cov_inv), (x - self.mean))
 
-        term1 = 1 / (np.sqrt((2 * np.pi)**d * det_cov))
-        diff = x - self.mean
-        term2 = np.exp(-0.5 * np.dot(diff.T, np.dot(inv_cov, diff)))
+        term1 = 1 / (np.power((2 * np.pi), d/2) * np.sqrt(cov_det))
+        term2 = np.exp(-0.5 * mahalanobis)
 
-        return term1 * term2[0, 0]
+        return term1 * term2
+
+
+if __name__ == '__main__':
+    np.random.seed(0)
+    data = np.random.multivariate_normal(
+        [12, 30, 10], [[36, -30, 15], [-30, 100, -20], [15, -20, 25]], 10000).T
+    mn = MultiNormal(data)
+    x = np.random.multivariate_normal(
+        [12, 30, 10], [[36, -30, 15], [-30, 100, -20], [15, -20, 25]], 1).T
+    print(x)
+    print(mn.pdf(x))
