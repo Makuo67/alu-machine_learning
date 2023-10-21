@@ -1,38 +1,56 @@
 #!/usr/bin/env python3
-"""Multivariate Normal distribution"""
-
-
+"""Defines `mean_cov`."""
 import numpy as np
 
 
 class MultiNormal:
-    """Represents a Multivariate Normal distribution"""
+    """A multivariate normal distribution."""
 
     def __init__(self, data):
-        """ Initialize MultiNormal """
-        if not isinstance(data, np.ndarray) or len(data.shape) != 2:
+        """
+        Initializes a MultiNormal.
+
+        data: A numpy.ndarray of shape (d, n) containing the data set:
+            d: The number of dimensions in each data point
+            n: The number of data points
+        """
+        if type(data) != np.ndarray or len(data.shape) != 2:
             raise TypeError("data must be a 2D numpy.ndarray")
+        elif data.shape[1] < 2:
+            raise ValueError('data must contain multiple data points')
 
-        d, n = data.shape
-        if n < 2:
-            raise ValueError("data must contain multiple data points")
-
+        sample_count = data.shape[1]
         self.mean = np.mean(data, axis=1, keepdims=True)
-        deviation = data - self.mean
-        self.cov = np.dot(deviation, deviation.T) / (n - 1)
+        mu = self.mean
+        self.cov = np.matmul(data - mu, data.T - mu.T) / (sample_count - 1)
 
     def pdf(self, x):
-        if not isinstance(x, np.ndarray):
-            raise TypeError("x must be a numpy.ndarray")
+        """
+        Calculates the probability density at a data point.
+
+        x: A numpy.ndarray of shape (d, 1) containing the data point whose PDF
+            should be calculated:
+            d: The number of dimensions of the MultiNormal instance
+
+        Returns: The value of the PDF at a point.
+        """
+        if not type(x) is np.ndarray:
+            raise TypeError('x must be a numpy.ndarray')
         d = self.cov.shape[0]
-        if len(x.shape) != 2 or x.shape[1] != 1 or x.shape[0] != d:
-            raise ValueError(f"x must have the shape ({d}, 1)")
+        if len(x.shape) != 2:
+            raise ValueError("x must have the shape ({}, 1)".format(d))
+        d0, d1 = x.shape
+        if d0 != d or d1 != 1:
+            raise ValueError("x must have the shape ({}, 1)".format(d))
 
-        # Compute terms for PDF formula
-        term1 = 1 / ((2 * np.pi) ** (d / 2) * np.linalg.det(self.cov) ** 0.5)
+        tau = np.pi * 2
+        determinant = np.linalg.det(self.cov)
+        x_centered = x - self.mean
+        probability_density = np.exp(
+            -0.5 *
+            x_centered.T @
+            np.linalg.inv(self.cov) @
+            x_centered
+        ) / np.sqrt(tau ** d * determinant)
 
-        # To ensure more accurate matrix inversion, we can use the pinv (pseudo-inverse) function
-        inv_cov = np.linalg.pinv(self.cov)
-        term2 = np.exp(-0.5 * (x - self.mean).T @ inv_cov @ (x - self.mean))
-
-        return float(term1 * term2)
+        return np.asscalar(probability_density)
