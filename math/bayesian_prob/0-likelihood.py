@@ -8,7 +8,7 @@ import numpy as np
 
 
 def binomial_coefficient(n, k):
-    # Custom binomial coefficient calculation
+    """Custom binomial coefficient calculation"""
     if k < 0 or k > n:
         return 0
     if k == 0 or k == n:
@@ -23,7 +23,7 @@ def binomial_coefficient(n, k):
 
 
 def likelihood(x, n, P):
-    # Check for valid input parameters
+    """Check for valid input parameters"""
     if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
     if not isinstance(x, int) or x < 0:
