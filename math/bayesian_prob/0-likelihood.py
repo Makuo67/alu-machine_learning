@@ -4,8 +4,6 @@
 
 import numpy as np
 
-import numpy as np
-
 
 def binomial_coefficient(n, k):
     """Custom binomial coefficient calculation"""
