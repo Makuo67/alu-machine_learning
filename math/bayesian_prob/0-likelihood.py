@@ -4,9 +4,26 @@
 
 import numpy as np
 
+import numpy as np
+
+
+def binomial_coefficient(n, k):
+    # Custom binomial coefficient calculation
+    if k < 0 or k > n:
+        return 0
+    if k == 0 or k == n:
+        return 1
+
+    k = min(k, n - k)
+    result = 1
+    for i in range(1, k + 1):
+        result = result * (n - i + 1) // i
+
+    return result
+
 
 def likelihood(x, n, P):
-    """Check for valid input parameters"""
+    # Check for valid input parameters
     if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
     if not isinstance(x, int) or x < 0:
@@ -19,8 +36,8 @@ def likelihood(x, n, P):
     if any(val < 0 or val > 1 for val in P):
         raise ValueError("All values in P must be in the range [0, 1]")
 
-    # Calculate the likelihood for each probability in P using the binomial probability mass function
-    likelihoods = np.array(
-        [np.math.comb(n, x) * p**x * (1 - p)**(n - x) for p in P])
+    # Calculate the likelihood in P using the custom binomial pmf
+    likelihoods = np.array([binomial_coefficient(
+        n, x) * p**x * (1 - p)**(n - x) for p in P])
 
     return likelihoods
