@@ -16,7 +16,7 @@ class Neuron:
             raise ValueError("nx must be positive")
 
         # Initialize weight, bias and activated output
-        self.__W = np.random.normal(0, 1, (1, nx))
+        self.__W = np.random.normal(0, 1, (nx, 1))
 
         self.__b = 0
 
