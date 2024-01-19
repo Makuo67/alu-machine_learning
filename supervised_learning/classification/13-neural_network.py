@@ -93,12 +93,13 @@ class NeuralNetwork:
         db2 = np.sum(dZ2, axis=1, keepdims=True) / m
 
         # Calculate hidden layer gradient
-        dZ1 = np.dot(self.W2.T, dZ2) * self.sigmoid_derivative(A1)
+        dA1 = np.dot(self.__W2.T, dZ2)
+        dZ1 = dA1 * self.sigmoid_derivative(A1)
         dW1 = np.dot(dZ1, X.T) / m
         db1 = np.sum(dZ1, axis=1, keepdims=True) / m
 
         # Update the weights and biases
-        self.__W1 -= alpha * dW1.T
+        self.__W1 -= alpha * dW1
         self.__b1 -= alpha * db1
         self.__W2 -= alpha * dW2
         self.__b2 -= alpha * db2
