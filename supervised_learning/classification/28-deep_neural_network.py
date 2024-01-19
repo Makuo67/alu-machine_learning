@@ -66,10 +66,15 @@ class DeepNeuralNetwork:
         self.__cache['A0'] = X
         A = X
 
-        for l in range(1, self.__L + 1):
-            Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights['b' + str(l)]
-            A = self.activate(Z)
-            self.__cache['A' + str(l)] = A
+        for layer in range(1, self.__L + 1):
+            Z = np.dot(self.__weights['W' + str(layer)], A) + self.__weights['b' + str(layer)]
+            if layer == self.__L:
+                # Use softmax activation for the output layer
+                exp_z = np.exp(Z)
+                A = exp_z / np.sum(exp_z, axis=0, keepdims=True)
+            else:
+                A = self.activate(Z)
+            self.__cache['A' + str(layer)] = A
 
         return A, self.__cache
 
