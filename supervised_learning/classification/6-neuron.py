@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Training a Neuron"""
+"""This module is of a binary classification"""
 import numpy as np
 
 
 class Neuron:
-    """Defines a single neuron perfoming binary classification"""
+    """class that defines a single neuron perfoming binary classification"""
 
     def __init__(self, nx):
-        """ Construtor"""
+        """ class construtor"""
 
         # nx - no. of input features to the neuron
         if not isinstance(nx, int):
@@ -86,8 +86,8 @@ class Neuron:
         db = np.sum(A - Y) / m
 
         # updating weights and bias
-        self.__W -= alpha * dw
-        self.__b -= alpha * db
+        self.__W = self.__W - alpha*dw
+        self.__b = self.__b - alpha*db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
         """Train the neuron
