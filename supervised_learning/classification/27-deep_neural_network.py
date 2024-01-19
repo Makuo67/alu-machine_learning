@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 """Deep Neural Network"""
 import numpy as np
@@ -21,6 +22,7 @@ class DeepNeuralNetwork:
         self.__cache = {}
         self.__weights = {}
 
+        # Initialize layers
         layer_sizes = [nx] + layers
         for l in range(1, self.L + 1):
             layer_size = layer_sizes[l]
@@ -31,7 +33,7 @@ class DeepNeuralNetwork:
             bias_key = 'b' + str(l)
             self.weights[weight_key] = np.random.randn(
                 layer_size, layer_sizes[l - 1]) * np.sqrt(
-                2 / layer_sizes[l - 1])
+                    2 / layer_sizes[l - 1])
             self.weights[bias_key] = np.zeros((layer_size, 1))
 
     @property
@@ -46,11 +48,11 @@ class DeepNeuralNetwork:
 
     @property
     def weights(self):
-        """Gettter for weights"""
+        """Getter for weights"""
         return self.__weights
 
     def sigmoid(self, Z):
-        """"Sigmoid activation function"""
+        """Sigmoid activation function"""
         return 1 / (1 + np.exp(-Z))
 
     def forward_prop(self, X):
@@ -58,15 +60,15 @@ class DeepNeuralNetwork:
         self.__cache['A0'] = X
         A = X
 
-        for layer in range(1, self.__L + 1):
-            Z = np.dot(self.__weights[
-                'W' + str(layer)], A) + self.__weights['b' + str(layer)]
-            if layer == self.__L:
+        for l in range(1, self.__L + 1):
+            Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights['b' + str(l)]
+            if l == self.__L:
+                # Use softmax activation for the output layer
                 exp_z = np.exp(Z)
                 A = exp_z / np.sum(exp_z, axis=0, keepdims=True)
             else:
                 A = self.sigmoid(Z)
-            self.__cache['A' + str(layer)] = A
+            self.__cache['A' + str(l)] = A
 
         return A, self.__cache
 
@@ -74,25 +76,25 @@ class DeepNeuralNetwork:
         """Cost function"""
         m = Y.shape[1]
         epsilon = 1e-15
+        # Calculate categorical cross-entropy cost
         cost = -np.sum(Y * np.log(A + epsilon)) / m
         return cost
 
     def evaluate(self, X, Y):
-        """Evaluate function"""
+        """EValuate DNN"""
         A, _ = self.forward_prop(X)
         predictions = np.argmax(A, axis=0)
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
         cost = self.cost(Y, A)
-        accuracy = np.sum(np.all(
-            Y == one_hot_predictions, axis=0)) / Y.shape[1]
+        accuracy = np.sum(np.all(Y == one_hot_predictions, axis=0)) / Y.shape[1]
         return one_hot_predictions, cost, accuracy
 
     def sigmoid_derivative(self, A):
-        """Signmoid derivs"""
+        """Derivative of the sigmoid activation function"""
         return A * (1 - A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Gradient descent func"""
+        """One pass of gradient descent on the neural network"""
         m = Y.shape[1]
         A = cache["A" + str(self.L)]
         dZ = A - Y
@@ -117,7 +119,7 @@ class DeepNeuralNetwork:
               verbose=True,
               graph=True,
               step=100):
-        """DNN training"""
+        """DNN Training"""
 
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -156,7 +158,7 @@ class DeepNeuralNetwork:
         return self.evaluate(X, Y)
 
     def save(self, filename):
-        """Saving DNN """
+        """Saves the instance object to a file in pickle format"""
         if not filename.endswith('.pkl'):
             filename += '.pkl'
 
@@ -165,9 +167,9 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        """Load file"""
+        """Loads a pickled DeepNeuralNetwork object"""
         try:
             with open(filename, 'rb') as file:
-                return pickle.load
+                return pickle.load(file)
         except FileNotFoundError:
             return None
