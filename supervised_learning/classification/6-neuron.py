@@ -71,7 +71,6 @@ class Neuron:
         A = self.forward_prop(X)
         cost = self.cost(Y, A)
         predictions = (A >= 0.5).astype(int)
-        accuracy = np.mean(predictions == Y)
         return predictions, cost
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
@@ -81,7 +80,7 @@ class Neuron:
         A - contains activated output of the neuron
         alpha - learning rate
         """
-        m = X.shape[1]  # examples
+        m = X.shape[1]  
         dw = np.dot(X, (A - Y).T) / m
         db = np.sum(A - Y) / m
 
