@@ -2,7 +2,10 @@
 """Neural Network Binary Classification"""
 import numpy as np
 
+
 class NeuralNetwork:
+    """Neural Network class"""
+
     def __init__(self, nx, nodes):
         """Constructor NeuralNetwork"""
         if not isinstance(nx, int):
