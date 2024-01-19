@@ -77,7 +77,10 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         m = Y.shape[1]
         epsilon = 1e-15
-        cost = -np.sum(Y * np.log(A + epsilon) + (1 - Y) * np.log(1 - A + epsilon)) / m
+        cost = -np.sum(Y * np.log(
+            np.clip(A, 1e-15, 1-1e-15)) + (1 - Y) * np.log(
+                np.clip(1 - A, 1e-15, 1-1e-15))) / m
+
         return cost
 
     def evaluate(self, X, Y):
