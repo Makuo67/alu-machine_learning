@@ -103,8 +103,8 @@ class DeepNeuralNetwork:
             self.weights["W" + str(l)] -= alpha * dW
             self.weights["b" + str(l)] -= alpha * db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, 
-          verbose=True, graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+                    verbose=True, graph=True, step=100):
         """DNN Training"""
 
         if not isinstance(iterations, int):
