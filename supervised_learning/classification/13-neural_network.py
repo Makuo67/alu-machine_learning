@@ -53,6 +53,11 @@ class NeuralNetwork:
     def sigmoid(self, Z):
         """Sigmoid activation function"""
         return 1 / (1 + np.exp(-Z))
+    
+    def sigmoid_derivative(self, Z):
+        """Derivative of the sigmoid function"""
+        sigmoid = self.sigmoid(Z)
+        return sigmoid * (1 - sigmoid)
 
     def forward_prop(self, X):
         """Calculate the forward propagation of the neural network"""
