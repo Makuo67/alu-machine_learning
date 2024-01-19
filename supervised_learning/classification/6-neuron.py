@@ -49,7 +49,7 @@ class Neuron:
         # weighted sum
         weighted_sum = np.dot(self.__W.T, X) + self.__b
         # applying activation function
-        self.__A = 1/(1 + np.exp(-weighted_sum))
+        self.__A = 1/(1 + np.exp(-weighted_sum)).reshape(1, -1)
 
         return self.__A
 
