@@ -87,7 +87,7 @@ class DeepNeuralNetwork:
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
         cost = self.cost(Y, A)
         accuracy = np.sum(np.all(Y == one_hot_predictions, axis=0)) / Y.shape[1]
-        return one_hot_predictions, cost, accuracy
+        return one_hot_predictions, cost
 
     def sigmoid_derivative(self, A):
         """Derivative of the sigmoid activation function"""
