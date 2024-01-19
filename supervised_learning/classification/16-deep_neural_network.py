@@ -14,17 +14,17 @@ class DeepNeuralNetwork:
         if not isinstance(layers, list) or not layers:
             raise TypeError("layers must be a list of positive integers")
 
-        # Check if layers are positive integers
-        if any(not isinstance(layer, int) or layer <= 0 for layer in layers):
-            raise TypeError("layers must be a list of positive integers")
-
         self.L = len(layers)
         self.cache = {}
         self.weights = {}
 
-        # He et al. weight initialization
-        for layer in range(1, self.L + 1):
-            layer_size = layers[layer - 1]
-            prev_layer_size = nx if layer == 1 else layers[layer - 2]
-            self.weights[f'W{layer}'] = np.random.randn(layer_size, prev_layer_size) * np.sqrt(2 / prev_layer_size)
-            self.weights[f'b{layer}'] = np.zeros((layer_size, 1))
+
+        # Initialize layers
+        layer_sizes = [nx] + layers
+        for l in range(1, self.L + 1):
+            layer_size = layer_sizes[l]
+            if not isinstance(layer_size, int) or layer_size <= 0:
+                raise TypeError("layers must be a list of positive integers")
+
+            self.weights[f'W{l}'] = np.random.randn(layer_size, layer_sizes[l - 1]) * np.sqrt(2 / layer_sizes[l - 1])
+            self.weights[f'b{l}'] = np.zeros((layer_size, 1))
