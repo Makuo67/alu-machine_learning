@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """Deep Neural Network"""
 import numpy as np
@@ -60,15 +59,16 @@ class DeepNeuralNetwork:
         self.__cache['A0'] = X
         A = X
 
-        for l in range(1, self.__L + 1):
-            Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights['b' + str(l)]
-            if l == self.__L:
+        for layer in range(1, self.__L + 1):
+            Z = np.dot(self.__weights[
+                'W' + str(layer)], A) + self.__weights['b' + str(layer)]
+            if layer == self.__L:
                 # Use softmax activation for the output layer
                 exp_z = np.exp(Z)
                 A = exp_z / np.sum(exp_z, axis=0, keepdims=True)
             else:
                 A = self.sigmoid(Z)
-            self.__cache['A' + str(l)] = A
+            self.__cache['A' + str(layer)] = A
 
         return A, self.__cache
 
@@ -86,7 +86,6 @@ class DeepNeuralNetwork:
         predictions = np.argmax(A, axis=0)
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
         cost = self.cost(Y, A)
-        accuracy = np.sum(np.all(Y == one_hot_predictions, axis=0)) / Y.shape[1]
         return one_hot_predictions, cost
 
     def sigmoid_derivative(self, A):
