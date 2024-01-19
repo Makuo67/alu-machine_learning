@@ -103,7 +103,10 @@ class DeepNeuralNetwork:
             self.weights["W" + str(l)] -= alpha * dW
             self.weights["b" + str(l)] -= alpha * db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+            verbose=True, graph=True, step=100):
+        """DNN Training"""
+
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations < 1:
@@ -112,6 +115,8 @@ class DeepNeuralNetwork:
             raise TypeError("alpha must be a float")
         if alpha <= 0:
             raise ValueError("alpha must be positive")
+        if not verbose and not graph or step > iterations:
+            step = iterations
         if not isinstance(step, int):
             raise TypeError("step must be an integer")
         if step <= 0 or step > iterations:
