@@ -107,5 +107,5 @@ class Neuron:
         db = np.sum(A - Y) / m
 
         # updating weights and bias
-        self.__W = self.__W - alpha*dw
-        self.__b = self.__b - alpha*db
+        self.__W -= alpha * dw.T
+        self.__b -= alpha * db
