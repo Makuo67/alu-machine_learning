@@ -86,7 +86,7 @@ class Neuron:
         db = np.sum(A - Y) / m
 
         # updating weights and bias
-        self.__W -= alpha * dw.T
+        self.__W -= alpha * dw
         self.__b -= alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
