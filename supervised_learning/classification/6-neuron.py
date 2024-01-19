@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Neuron Gradient Descent"""
+"""This module is of a binary classification"""
 import numpy as np
 
 
 class Neuron:
-    """Defines a single neuron perfoming binary classification"""
+    """class that defines a single neuron perfoming binary classification"""
 
     def __init__(self, nx):
-        """ construtor"""
+        """ class construtor"""
 
         # nx - no. of input features to the neuron
         if not isinstance(nx, int):
@@ -16,7 +16,7 @@ class Neuron:
             raise ValueError("nx must be positive")
 
         # w - weights vector of the neuron
-        self.__W = np.random.normal(0, 1, (1, nx))
+        self.__W = np.random.normal(0, 1, (nx, 1))
 
         # Initialize the bias the neuron
         self.__b = 0
@@ -30,33 +30,15 @@ class Neuron:
         """getter function"""
         return self.__W
 
-    # # setter function
-    # @W.setter
-    # def W(self, value):
-    #     """setter function"""
-    #     self.__W = value
-
     @property
     def b(self):
         """getter function"""
         return self.__b
 
-    # # setter function
-    # @b.setter
-    # def b(self, value):
-    #     """setter function"""
-    #     self.__b = value
-
     @property
     def A(self):
         """getter function"""
         return self.__A
-
-    # # setter function
-    # @A.setter
-    # def A(self, value):
-    #     """setter function"""
-    #     self.__A = value
 
     def forward_prop(self, X):
         """calculating forward propagation of the neuron"""
@@ -99,17 +81,13 @@ class Neuron:
         A - contains activated output of the neuron
         alpha - learning rate
         """
-        #  w = w - alpha*dw
-        # w = w - alpha*d(w, b)/dw
-        # b = b - alpha * d(w, b) / db
         m = X.shape[1]  # examples
         dw = np.dot(X, (A - Y).T) / m
         db = np.sum(A - Y) / m
 
         # updating weights and bias
-        self.__W -= alpha * dw
-        self.__b -= alpha * db
-
+        self.__W = self.__W - alpha*dw
+        self.__b = self.__b - alpha*db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
         """Train the neuron
