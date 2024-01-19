@@ -107,14 +107,13 @@ class DeepNeuralNetwork:
             biases = self.weights.get('b' + str(i + 1))
             weights = self.weights.get('W' + str(i + 1))
             Z = np.matmul(weights, A) + biases
-            if i + 1 == self.L:
-                t = np.exp(Z)
-                a = t / np.sum(t, axis=0, keepdims=True)
+
+            if self.activation == 'sig':
+                a = 1 / (1 + np.exp(-Z))
+            elif self.activation == 'tanh':
+                a = np.tanh(Z)
             else:
-                if self.activation == 'sig':
-                    a = 1 / (1 + np.exp(-Z))
-                else:
-                    a = np.tanh(Z)
+                raise ValueError("activation must be 'sig' or 'tanh'")
 
             self.cache.update({'A' + str(i + 1): a})
 
