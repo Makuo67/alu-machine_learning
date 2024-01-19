@@ -55,23 +55,25 @@ class DeepNeuralNetwork:
         return 1 / (1 + np.exp(-Z))
 
     def forward_prop(self, X):
+        """Forward propagation"""
         self.__cache['A0'] = X
         A = X
 
-        for l in range(1, self.__L + 1):
+        for layer in range(1, self.__L + 1):
             Z = np.dot(self.__weights[
-                'W' + str(l)], A) + self.__weights['b' + str(l)]
-            if l == self.__L:
+                'W' + str(layer)], A) + self.__weights['b' + str(layer)]
+            if layer == self.__L:
                 # Use softmax activation for the output layer
                 exp_z = np.exp(Z)
                 A = exp_z / np.sum(exp_z, axis=0, keepdims=True)
             else:
                 A = self.sigmoid(Z)
-            self.__cache['A' + str(l)] = A
+            self.__cache['A' + str(layer)] = A
 
         return A, self.__cache
 
     def cost(self, Y, A):
+        """DNN cost"""
         m = Y.shape[1]
         epsilon = 1e-15
         # Calculate categorical cross-entropy cost
@@ -79,6 +81,7 @@ class DeepNeuralNetwork:
         return cost
 
     def evaluate(self, X, Y):
+        """DNN Evaluate"""
         A, _ = self.forward_prop(X)
         predictions = np.argmax(A, axis=0)
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
@@ -153,7 +156,7 @@ class DeepNeuralNetwork:
             plt.title("Training Cost")
             plt.show()
 
-        return self.evaluate(X, Y)
+        return A, cost
 
     def save(self, filename):
         """Saves the instance object to a file in pickle format"""
