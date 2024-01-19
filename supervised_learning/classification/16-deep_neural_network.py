@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Deep Neural Network"""
 import numpy as np
 
 
@@ -28,5 +29,6 @@ class DeepNeuralNetwork:
             weight_key = 'W' + str(l)
             bias_key = 'b' + str(l)
             self.weights[weight_key] = np.random.randn(
-                layer_size, layer_sizes[l - 1]) * np.sqrt(2 / layer_sizes[l - 1])
+                layer_size, layer_sizes[l - 1]) * np.sqrt(
+                    2 / layer_sizes[l - 1])
             self.weights[bias_key] = np.zeros((layer_size, 1))
