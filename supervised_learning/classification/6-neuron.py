@@ -16,7 +16,7 @@ class Neuron:
             raise ValueError("nx must be positive")
 
         # w - weights vector of the neuron
-        self.__W = np.random.normal(0, 1, (1, nx))
+        self.__W = np.random.normal(0, 1, (nx, 1))
 
         # Initialize the bias the neuron
         self.__b = 0
