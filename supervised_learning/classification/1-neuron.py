@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""This module is of a binary classification"""
+"""Privatize Neuron"""
 import numpy as np
 
 
@@ -15,13 +15,11 @@ class Neuron:
         if nx < 1:
             raise ValueError("nx must be positive")
 
-        # w - weights vector of the neuron
-        self.__W = np.random.normal(0, 1, (nx, 1))
+        # Initialize weights, bias and activated output
+        self.__W = np.random.normal(0, 1, (1, nx))
 
-        # Initialize the bias the neuron
         self.__b = 0
 
-        # Initialize the activated output of the neuron (Prediction)
         self.__A = 0
 
     # getter function
