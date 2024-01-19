@@ -55,45 +55,36 @@ class DeepNeuralNetwork:
         return 1 / (1 + np.exp(-Z))
 
     def forward_prop(self, X):
-        """Calculate forward propagation of the neural network"""
         self.__cache['A0'] = X
         A = X
 
         for l in range(1, self.__L + 1):
-            Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights[
-                'b' + str(l)]
-            A = self.sigmoid(Z)
+            Z = np.dot(self.__weights[
+                'W' + str(l)], A) + self.__weights['b' + str(l)]
+            if l == self.__L:
+                # Use softmax activation for the output layer
+                exp_z = np.exp(Z)
+                A = exp_z / np.sum(exp_z, axis=0, keepdims=True)
+            else:
+                A = self.sigmoid(Z)
             self.__cache['A' + str(l)] = A
 
         return A, self.__cache
 
     def cost(self, Y, A):
-        """Calculate the cost of the model using categorical cross-entropy"""
         m = Y.shape[1]
-        cost = -np.sum(Y * np.log(A)) / m
+        epsilon = 1e-15
+        # Calculate categorical cross-entropy cost
+        cost = -np.sum(Y * np.log(A + epsilon)) / m
         return cost
-    
-    def one_hot_encode(Y, classes):
-        """
-        Converts a numeric label vector into a one-hot matrix.
-        Y: numpy.ndarray - numeric class labels
-        classes: int - maximum number of classes
-        """
-        if not isinstance(Y, np.ndarray) or len(Y) == 0:
-            return None
-        if not isinstance(classes, int) or classes <= np.max(Y):
-            return None
-
-        one_hot = np.eye(classes)[Y].T
-        return one_hot
 
     def evaluate(self, X, Y):
-        """Evaluate the neural network's predictions"""
         A, _ = self.forward_prop(X)
         predictions = np.argmax(A, axis=0)
-        one_hot_predictions = self.one_hot_encode(predictions, Y.shape[0])
+        one_hot_predictions = np.eye(Y.shape[0])[predictions].T
         cost = self.cost(Y, A)
-        accuracy = np.sum(Y == one_hot_predictions) / Y.shape[1]
+        accuracy = np.sum(np.all(
+            Y == one_hot_predictions, axis=0)) / Y.shape[1]
         return one_hot_predictions, cost, accuracy
 
     def sigmoid_derivative(self, A):
