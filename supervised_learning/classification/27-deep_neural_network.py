@@ -21,7 +21,6 @@ class DeepNeuralNetwork:
         self.__cache = {}
         self.__weights = {}
 
-        # Initialize layers
         layer_sizes = [nx] + layers
         for l in range(1, self.L + 1):
             layer_size = layer_sizes[l]
@@ -32,7 +31,7 @@ class DeepNeuralNetwork:
             bias_key = 'b' + str(l)
             self.weights[weight_key] = np.random.randn(
                 layer_size, layer_sizes[l - 1]) * np.sqrt(
-                    2 / layer_sizes[l - 1])
+                2 / layer_sizes[l - 1])
             self.weights[bias_key] = np.zeros((layer_size, 1))
 
     @property
@@ -47,15 +46,15 @@ class DeepNeuralNetwork:
 
     @property
     def weights(self):
-        """Getter for weights"""
+        """Gettter for weights"""
         return self.__weights
 
     def sigmoid(self, Z):
-        """Sigmoid activation function"""
+        """"Sigmoid activation function"""
         return 1 / (1 + np.exp(-Z))
 
     def forward_prop(self, X):
-        """Forward propagation"""
+        """Forward prop"""
         self.__cache['A0'] = X
         A = X
 
@@ -63,7 +62,6 @@ class DeepNeuralNetwork:
             Z = np.dot(self.__weights[
                 'W' + str(layer)], A) + self.__weights['b' + str(layer)]
             if layer == self.__L:
-                # Use softmax activation for the output layer
                 exp_z = np.exp(Z)
                 A = exp_z / np.sum(exp_z, axis=0, keepdims=True)
             else:
@@ -73,15 +71,14 @@ class DeepNeuralNetwork:
         return A, self.__cache
 
     def cost(self, Y, A):
-        """DNN cost"""
+        """Cost function"""
         m = Y.shape[1]
         epsilon = 1e-15
-        # Calculate categorical cross-entropy cost
         cost = -np.sum(Y * np.log(A + epsilon)) / m
         return cost
 
     def evaluate(self, X, Y):
-        """DNN Evaluate"""
+        """Evaluate function"""
         A, _ = self.forward_prop(X)
         predictions = np.argmax(A, axis=0)
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
@@ -91,13 +88,13 @@ class DeepNeuralNetwork:
         return one_hot_predictions, cost, accuracy
 
     def sigmoid_derivative(self, A):
-        """Derivative of the sigmoid activation function"""
+        """Signmoid derivs"""
         return A * (1 - A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """One pass of gradient descent on the neural network"""
+        """Gradient descent func"""
         m = Y.shape[1]
-        A = cache["A" + str(self.__L)]
+        A = cache["A" + str(self.L)]
         dZ = A - Y
 
         for l in reversed(range(1, self.L + 1)):
@@ -120,7 +117,7 @@ class DeepNeuralNetwork:
               verbose=True,
               graph=True,
               step=100):
-        """DNN Training"""
+        """DNN training"""
 
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -156,10 +153,11 @@ class DeepNeuralNetwork:
             plt.title("Training Cost")
             plt.show()
 
-        return A, cost
+        one_hot_predictions, _, accuracy = self.evaluate(X, Y)
+        return one_hot_predictions, cost, accuracy
 
     def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
+        """Saving DNN """
         if not filename.endswith('.pkl'):
             filename += '.pkl'
 
@@ -168,9 +166,9 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        """Loads a pickled DeepNeuralNetwork object"""
+        """Load file"""
         try:
             with open(filename, 'rb') as file:
-                return pickle.load(file)
+                return pickle.load
         except FileNotFoundError:
             return None
