@@ -53,7 +53,7 @@ class NeuralNetwork:
     def sigmoid(self, Z):
         """Sigmoid activation function"""
         return 1 / (1 + np.exp(-Z))
-    
+
     def sigmoid_derivative(self, Z):
         """Derivative of the sigmoid function"""
         sigmoid = self.sigmoid(Z)
@@ -93,7 +93,7 @@ class NeuralNetwork:
         db2 = np.sum(dZ2, axis=1, keepdims=True) / m
 
         # Calculate hidden layer gradient
-        dZ1 = np.dot(self.__W2.T, dZ2) * self.sigmoid_derivative(self.__A1)
+        dZ1 = np.dot(self.W2.T, dZ2) * self.sigmoid_derivative(A1)
         dW1 = np.dot(dZ1, X.T) / m
         db1 = np.sum(dZ1, axis=1, keepdims=True) / m
 
