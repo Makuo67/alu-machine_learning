@@ -77,7 +77,8 @@ class DeepNeuralNetwork:
         A = X
 
         for l in range(1, self.__L + 1):
-            Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights['b' + str(l)]
+            Z = np.dot(self.__weights[
+                'W' + str(l)], A) + self.__weights['b' + str(l)]
             A = self.activate(Z)
             self.__cache['A' + str(l)] = A
 
@@ -96,8 +97,7 @@ class DeepNeuralNetwork:
         predictions = np.argmax(A, axis=0)
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
         cost = self.cost(Y, A)
-        accuracy = np.sum(np.all(Y == one_hot_predictions, axis=0)) / Y.shape[1]
-        return one_hot_predictions, cost, accuracy
+        return one_hot_predictions, cost
 
     def sigmoid_derivative(self, A):
         """Sigmoid derivative"""
