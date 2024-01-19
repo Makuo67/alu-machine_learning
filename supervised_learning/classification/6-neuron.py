@@ -2,6 +2,7 @@
 """Neuron for Binary Classification"""
 import numpy as np
 
+
 class Neuron:
     """Defines a single neuron performing binary classification"""
 
@@ -29,22 +30,27 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
+        """Forward propagation"""
         z = np.dot(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-z))
         return self.__A
 
     def cost(self, Y, A):
+        """Cost"""
         m = Y.shape[1]
-        cost = -(1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        cost = -(1 / m) * np.sum(
+            Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         return cost
 
     def evaluate(self, X, Y):
+        """Evaluate"""
         A = self.forward_prop(X)
         cost = self.cost(Y, A)
         predictions = (A >= 0.5).astype(int)
         return predictions, cost
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
+        """Gradient descent"""
         m = X.shape[1]
         dz = A - Y
         dw = np.dot(X, dz.T) / m
