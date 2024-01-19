@@ -4,12 +4,12 @@ import numpy as np
 
 
 class Neuron:
-    """class that defines a single neuron performing classification"""
+    """Defining a single neuron performing classification"""
 
     def __init__(self, nx):
-        """class constructor
+        """ constructor
         """
-        # nx - no. of input features to the neuron
+        # Check if nx is an integer and greater than 0
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -19,8 +19,8 @@ class Neuron:
         mean = 0
         std_dev = 1
 
-        # Generate a random number from a normal distribution
-        self.W = np.random.normal(0, 1, (nx, 1))
+        # Initialize weights, bias, and activated output
+        self.W = np.random.normal(0, 1, (1, nx))
 
         # b - bias of the neuron
         self.b = 0
