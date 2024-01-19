@@ -19,9 +19,8 @@ class DeepNeuralNetwork:
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        self.__activation = activation  # Store the activation function type
+        self.__activation = activation
 
-        # Initialize layers
         layer_sizes = [nx] + layers
         for l in range(1, self.L + 1):
             layer_size = layer_sizes[l]
@@ -49,7 +48,7 @@ class DeepNeuralNetwork:
 
     @property
     def activation(self):
-        return self.__activation  # Getter for the activation function
+        return self.__activation
 
     def sigmoid(self, Z):
         return 1 / (1 + np.exp(-Z))
@@ -69,7 +68,7 @@ class DeepNeuralNetwork:
 
         for l in range(1, self.__L + 1):
             Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights['b' + str(l)]
-            A = self.activate(Z)  # Use the specified activation function
+            A = self.activate(Z)
             self.__cache['A' + str(l)] = A
 
         return A, self.__cache
@@ -77,9 +76,7 @@ class DeepNeuralNetwork:
     def cost(self, Y, A):
         m = Y.shape[1]
         epsilon = 1e-15
-        cost = -np.sum(Y * np.log(
-            np.clip(A, 1e-15, 1-1e-15)) + (1 - Y) * np.log(
-                np.clip(1 - A, 1e-15, 1-1e-15))) / m
+        cost = -np.sum(Y * np.log(np.clip(A, epsilon, 1 - epsilon)) + (1 - Y) * np.log(np.clip(1 - A, epsilon, 1 - epsilon))) / m
 
         return cost
 
