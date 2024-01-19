@@ -74,10 +74,11 @@ class DeepNeuralNetwork:
         return A, self.__cache
 
     def cost(self, Y, A):
+        """Cost function"""
         m = Y.shape[1]
         epsilon = 1e-15
-        cost = -np.sum(Y * np.log(np.clip(A, epsilon, 1 - epsilon)) + (1 - Y) * np.log(np.clip(1 - A, epsilon, 1 - epsilon))) / m
-
+        # Calculate categorical cross-entropy cost
+        cost = -np.sum(Y * np.log(A + epsilon)) / m
         return cost
 
     def evaluate(self, X, Y):
