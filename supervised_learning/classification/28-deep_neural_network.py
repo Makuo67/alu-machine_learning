@@ -6,21 +6,20 @@ import pickle
 
 
 class DeepNeuralNetwork:
-    """Deep Neural Network Class"""
-
     def __init__(self, nx, layers, activation='sig'):
-        """Constructor for DeepNeuralNetwork"""
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
             raise ValueError("nx must be a positive integer")
         if not isinstance(layers, list) or not layers:
             raise TypeError("layers must be a list of positive integers")
+        if activation not in ('sig', 'tanh'):
+            raise ValueError("activation must be 'sig' or 'tanh'")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        self.__activation = activation
+        self.__activation = activation  # Store the activation function type
 
         # Initialize layers
         layer_sizes = [nx] + layers
@@ -33,66 +32,55 @@ class DeepNeuralNetwork:
             bias_key = 'b' + str(l)
             self.weights[weight_key] = np.random.randn(
                 layer_size, layer_sizes[l - 1]) * np.sqrt(
-                    2 / layer_sizes[l - 1])
+                2 / layer_sizes[l - 1])
             self.weights[bias_key] = np.zeros((layer_size, 1))
 
     @property
     def L(self):
-        """Getter for L"""
         return self.__L
 
     @property
     def cache(self):
-        """Getter for cache"""
         return self.__cache
 
     @property
     def weights(self):
-        """Getter for weights"""
         return self.__weights
-    
+
     @property
     def activation(self):
-        """Activation function"""
-        return self.__activation
+        return self.__activation  # Getter for the activation function
 
     def sigmoid(self, Z):
-        """Sigmoid activation function"""
         return 1 / (1 + np.exp(-Z))
 
     def tanh(self, Z):
-        """Tanh function"""
         return np.tanh(Z)
 
     def activate(self, Z):
-        """Activate func"""
         if self.activation == 'sig':
             return self.sigmoid(Z)
         elif self.activation == 'tanh':
             return self.tanh(Z)
 
     def forward_prop(self, X):
-        """Forwar prop"""
         self.__cache['A0'] = X
         A = X
 
         for l in range(1, self.__L + 1):
-            Z = np.dot(self.__weights[
-                'W' + str(l)], A) + self.__weights['b' + str(l)]
-            A = self.activate(Z)
+            Z = np.dot(self.__weights['W' + str(l)], A) + self.__weights['b' + str(l)]
+            A = self.activate(Z)  # Use the specified activation function
             self.__cache['A' + str(l)] = A
 
         return A, self.__cache
 
     def cost(self, Y, A):
-        """Cost func"""
         m = Y.shape[1]
         epsilon = 1e-15
         cost = -np.sum(Y * np.log(A + epsilon)) / m
         return cost
 
     def evaluate(self, X, Y):
-        """Evaluate func"""
         A, _ = self.forward_prop(X)
         predictions = np.argmax(A, axis=0)
         one_hot_predictions = np.eye(Y.shape[0])[predictions].T
@@ -100,22 +88,18 @@ class DeepNeuralNetwork:
         return one_hot_predictions, cost
 
     def sigmoid_derivative(self, A):
-        """Sigmoid derivative"""
         return A * (1 - A)
 
     def tanh_derivative(self, A):
-        """Tanh derivative"""
         return 1 - A**2
 
     def activation_derivative(self, A):
-        """Activation derivative"""
         if self.activation == 'sig':
             return self.sigmoid_derivative(A)
         elif self.activation == 'tanh':
             return self.tanh_derivative(A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Gradient descent"""
         m = Y.shape[1]
         A = cache["A" + str(self.L)]
         dZ = A - Y
@@ -132,16 +116,7 @@ class DeepNeuralNetwork:
             self.weights["W" + str(l)] -= alpha * dW
             self.weights["b" + str(l)] -= alpha * db
 
-    def train(self,
-              X,
-              Y,
-              iterations=5000,
-              alpha=0.05,
-              verbose=True,
-              graph=True,
-              step=100):
-        """DNN Training"""
-
+    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations < 1:
@@ -179,7 +154,6 @@ class DeepNeuralNetwork:
         return self.evaluate(X, Y)
 
     def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
         if not filename.endswith('.pkl'):
             filename += '.pkl'
 
@@ -188,7 +162,6 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        """Loads a pickled DeepNeuralNetwork object"""
         try:
             with open(filename, 'rb') as file:
                 return pickle.load(file)
