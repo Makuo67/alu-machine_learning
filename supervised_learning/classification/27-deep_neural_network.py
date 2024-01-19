@@ -153,8 +153,7 @@ class DeepNeuralNetwork:
             plt.title("Training Cost")
             plt.show()
 
-        one_hot_predictions, _, accuracy = self.evaluate(X, Y)
-        return one_hot_predictions, cost, accuracy
+        return self.evaluate(X, Y)
 
     def save(self, filename):
         """Saving DNN """
