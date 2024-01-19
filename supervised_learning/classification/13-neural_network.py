@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Neural Network for Binary Classification"""
+"""Neural Network Binary Classification"""
 import numpy as np
 
 class NeuralNetwork:
     def __init__(self, nx, nodes):
-        """Constructor for NeuralNetwork"""
+        """Constructor NeuralNetwork"""
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -61,12 +61,12 @@ class NeuralNetwork:
         """Calculate one pass of gradient descent on the neural network"""
         m = Y.shape[1]
 
-        # Calculate gradients for the output layer
+        # Calculate gradients of the output layer
         dZ2 = A2 - Y
         dW2 = np.dot(dZ2, A1.T) / m
         db2 = np.sum(dZ2, axis=1, keepdims=True) / m
 
-        # Calculate gradients for the hidden layer
+        # Calculate gradients of the hidden layer
         dZ1 = np.dot(self.W2.T, dZ2) * (A1 * (1 - A1))
         dW1 = np.dot(dZ1, X.T) / m
         db1 = np.sum(dZ1, axis=1, keepdims=True) / m
