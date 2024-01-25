@@ -16,10 +16,15 @@ def create_layer(prev, n, activation):
     tensor output of the layer
     """
     # Use He et al. initialization for the layer weights
-    initializer = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
+    initializer = tf.contrib.layers.variance_scaling_initializer(
+        mode="FAN_AVG")
 
-    # Create the layer with specified number of nodes, activation, and initialization
-    layer = tf.layers.Dense(units=n, activation=activation, kernel_initializer=initializer, name='layer')
+    # Layer with specified number of nodes, activation, and initialization
+    layer = tf.layers.Dense(
+        units=n,
+        activation=activation,
+        kernel_initializer=initializer,
+        name='layer')
 
     # Apply the layer to the previous tensor
     output = layer(prev)
