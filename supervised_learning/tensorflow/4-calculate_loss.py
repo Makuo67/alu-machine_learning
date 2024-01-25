@@ -19,4 +19,3 @@ def calculate_loss(y, y_pred):
         labels=y, logits=y_pred))
 
     return loss
-
