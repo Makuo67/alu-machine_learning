@@ -10,14 +10,15 @@ def forward_prop(x, layer_sizes=[], activations=[]):
 
     Arguments:
     x: placeholder for the input data
-    layer_sizes: a list containing the number of nodes in each layer of the network
-    activations: a list containing the activation functions for each layer of the network
+    layer_sizes: the number of nodes in each layer of the network
+    activations: the activation functions for each layer of the network
 
     Returns:
     the prediction of the network in tensor form
     """
     # Ensure the number of layers and activations match
-    assert len(layer_sizes) == len(activations), "Number of layers and activations must be the same"
+    assert len(layer_sizes) == len(
+        activations), "Number of layers and activations must be the same"
 
     # Initialize the input tensor
     prev = x
