@@ -1,39 +1,27 @@
 #!/usr/bin/env python3
-"""Updates the weights and biases of a neural network using gradient descent with L2 regularization"""
+"""l2 reg gradient descent"""
 import numpy as np
 
 
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
-    """
-    Args:
-    - Y: a one-hot numpy.ndarray of shape (classes, m)
-    - weights:dictionary of the weights and biases of the network
-    - cache: dictionary of the outputs of each layer of the network
-    - alpha: the learning rate
-    - lambtha: the L2 regularization parameter
-    - L: the number of layers of the network
-
-    Returns:
-    - None (updates the weights and biases in place)
-    """
-
+    """Calculates L2 Regularization cost"""
+    n_layers = range(L, 0, -1)
     m = Y.shape[1]
+    dZ_prev = 0
+    w = weights.copy()
 
-    for layer in range(L, 0, -1):
-        A_key = 'A' + str(layer)
-        A_prev_key = 'A' + str(layer - 1)
-        W_key = 'W' + str(layer)
-        b_key = 'b' + str(layer)
-
-        if layer == L:
-            dZ = cache[A_key] - Y
+    for i in n_layers:
+        A = cache['A{}'.format(i)]
+        A_prev = cache['A{}'.format(i - 1)]
+        weights_i = w.get('W{}'.format(i))
+        weights_n = w.get('W{}'.format(i + 1))
+        biases = w.get('b' + str(i))
+        if i == L:
+            dZ = A - Y
         else:
-            dZ = np.dot(weights['W' + str(layer + 1)].T, dZ) * (
-                1 - np.power(cache[A_key], 2))
-
-        dW = np.dot(dZ, cache[A_prev_key].T) / m + (
-            lambtha / m) * weights[W_key]
+            dZ = np.matmul(weights_n.T, dZ_prev) * (1 - (A * A))
+        dW = np.matmul(dZ, A_prev.T) / m + ((lambtha / m) * weights_i)
         db = np.sum(dZ, axis=1, keepdims=True) / m
-
-        weights[W_key] -= alpha * dW
-        weights[b_key] -= alpha * db
+        weights['W' + str(i)] = weights_i - (dW * alpha)
+        weights['b' + str(i)] = biases - (db * alpha)
+        dZ_prev = dZ
