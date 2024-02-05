@@ -16,7 +16,10 @@ def model(Data_train,
           batch_size=32,
           epochs=5,
           save_path='/tmp/model.ckpt'):
-    # Separate training and validation data
+    """Separate training and validation data"""
+    with tf.Session() as sess:
+        sess.run(init)
+    
     X_train, Y_train = Data_train
     X_valid, Y_valid = Data_valid
 
@@ -91,7 +94,9 @@ def model(Data_train,
 
     return save_path
 
+
 def initialize_parameters(layers):
+    """Init"""
     parameters = {}
     for i in range(1, len(layers)):
         parameters[
@@ -103,7 +108,9 @@ def initialize_parameters(layers):
                 1, layers[i]), initializer=tf.zeros_initializer())
     return parameters
 
+
 def forward_propagation(x, parameters, activations):
+    """Forward Prop"""
     a = x
     for i in range(1, len(parameters)//2 + 1):
         z = tf.add(tf.matmul(
@@ -114,26 +121,34 @@ def forward_propagation(x, parameters, activations):
             a = tf.nn.relu(z)
     return a
 
+
 def compute_cost(y_pred, y):
+    """Compute"""
     cost = tf.reduce_mean(
         tf.nn.softmax_cross_entropy_with_logits(logits=y_pred, labels=y))
     return cost
 
+
 def compute_accuracy(y_pred, y):
+    """Accuracy"""
     correct_prediction = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     return accuracy
 
+
 def shuffle_data(X, Y):
+    """Shuffle"""
     perm = np.random.permutation(X.shape[0])
     X_shuffled = X[perm]
     Y_shuffled = Y[perm]
     return X_shuffled, Y_shuffled
 
+
 def create_optimizer(alpha, beta1, beta2, epsilon, decay_rate):
+    """Optimizer"""
     global_step = tf.Variable(0, trainable=False)
     learning_rate = tf.train.inverse_time_decay(
-        alpha, global_step, decay_rate, 1)
+        alpha, global_step, decay_rate, 1, staircase=True)
     optimizer = tf.train.AdamOptimizer(
         learning_rate=learning_rate, beta1=beta1, beta2=beta2, epsilon=epsilon)
     return optimizer
