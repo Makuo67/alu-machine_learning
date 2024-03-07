@@ -7,9 +7,9 @@ import requests
 
 def availableShips(passengerCount):
     """API for available ships"""
-    url = "https://swapi-api.alx-tools.com/api/"
+    url = "https://swapi-api.alx-tools.com/api/starships"
     ships = []
-    response = requests.get(f'{url}/starships')
+    response = requests.get(url)
 
     while response.status_code == 200:
         result = response.json()
