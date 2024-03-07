@@ -1,31 +1,24 @@
 #!/usr/bin/env python3
 """Returns a list of ships that can hold a given number of passengers"""
-
-
 import requests
 
 
 def availableShips(passengerCount):
-    """API for available ships"""
-    url = "https://swapi-api.alx-tools.com/api/starships"
-    ships = []
-    response = requests.get(url)
-
-    while response.status_code == 200:
-        result = response.json()
-        for ship in result['results']:
-            passengers = ship['passengers'].replace(',', '')
-            try:
-                if int(passengers) >= passengerCount:
-                    ships.append(ship['name'])
-            except ValueError:
-                pass
-
-            try:
-                response = requests.get(response['next'])
-            except Exception:
-                break
-    return ships
-
-
-availableShips(4)
+    """
+    Function to get request
+    Args:
+        passengerCount: number of passangers
+    Returns: List of starships
+    """
+    starships = []
+    url = 'https://swapi-api.alx-tools.com/api/starships/'
+    while url is not None:
+        response = requests.get(url,
+                                headers={'Accept': 'application/json'},
+                                params={"term": 'starships'})
+        for ship in response.json()['results']:
+            passenger = ship['passengers'].replace(',', '')
+            if passenger.isnumeric() and int(passenger) >= passengerCount:
+                starships.append(ship['name'])
+        url = response.json()['next']
+    return starships
