@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Function that returns homes of planet sentient
-    
+
 """
 import requests
 
@@ -16,7 +16,8 @@ def sentientPlanets():
         result = response.json()
 
         for res in result['results']:
-            if res['classification'] == "sentient" or res['designation'] == 'sentient':
+            if res['classification'] == "sentient" or \
+                    res['designation'] == 'sentient':
                 if res['homeworld'] is not None:
                     homeworld = requests.get(res['homeworld'], timeout=1000)
                     sentient.append(homeworld.json()['name'])
