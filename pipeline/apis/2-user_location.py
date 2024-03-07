@@ -11,7 +11,7 @@ if __name__ == '__main__':
     res = response.json()
 
     if response.status_code == 200:
-        print(res['Location'])
+        print(res['location'])
     elif response.status_code == 404:
         print('Not found')
     elif response.status_code == 403:
