@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-""" insert doc"""
+"""update values with pymongo"""
 
 
-def insert_school(mongo_collection, **kwargs):
+def update_topics(mongo_collection, name, topics):
     """
-    insert a document in a collection based on kwargs
+    update values in a collection
     Args:
-        mongo_collection: pymongo collection object
-        **kwargs: entry value
-    Returns: new id
+        mongo_collection: pymongo collection object.
+        name: type str name to be updated.
+        topics: type list of topics approached in the school.
     """
-    return mongo_collection.insert_one(kwargs).inserted_id
+    query = {"name": name}
+    topic = {"$set": {"topics": topics}}
+    mongo_collection.update_many(query, topic)
