@@ -1,17 +1,12 @@
 -- Creates a stored procedure
-CREATE PROCEDURE ComputeAverageWeightedScoreForUser(IN user_id INT)
+DELIMITER //
+
+CREATE PROCEDURE ComputeAverageWeightedScoreForUser (IN user_id_new INTEGER)
 BEGIN
-  -- Declare variable for storing the computed weighted average
-  DECLARE weighted_avg DECIMAL(10,2);
-  
-  SELECT SUM(score * weight) / SUM(weight) INTO weighted_avg
-  FROM scores
-  WHERE user_id = user_id;
-
-  UPDATE users
-  SET average_weighted_score = weighted_avg
-  WHERE id = user_id;
-  
-END$$
-
+	UPDATE users SET average_score=(
+	SELECT SUM(score * weight) / SUM(weight) FROM corrections
+	JOIN projects
+	ON corrections.project_id=projects.id
+	WHERE user_id=user_id_new);
+END; //
 DELIMITER ;
