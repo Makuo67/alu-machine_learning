@@ -186,6 +186,7 @@ class NST:
             raise TypeError("input_layer must be a tensor of rank 4")
         if len(input_layer.shape) is not 4:
             raise TypeError("input_layer must be a tensor of rank 4")
+        input_layer = tf.cast(input_layer, tf.float32)
         _, h, w, c = input_layer.shape
         product = int(h * w)
         features = tf.reshape(input_layer, (product, c))
@@ -233,12 +234,14 @@ class NST:
         if not isinstance(style_output, (tf.Tensor, tf.Variable)) or \
            len(style_output.shape) is not 4:
             raise TypeError("style_output must be a tensor of rank 4")
+
         one, h, w, c = style_output.shape
         if not isinstance(gram_target, (tf.Tensor, tf.Variable)) or \
            len(gram_target.shape) is not 3 or gram_target.shape != (1, c, c):
             raise TypeError(
                 "gram_target must be a tensor of shape [1, {}, {}]".format(
                     c, c))
+        style_output = tf.cast(style_output, tf.float32)
         gram_style = self.gram_matrix(style_output)
         diff = tf.reduce_mean(tf.square(gram_style - gram_target))
         return diff
