@@ -257,15 +257,12 @@ class NST:
         returns:
             the style cost
         """
-        length = len(self.style_layers)
-        if type(style_outputs) is not list or len(style_outputs) != length:
+        if type(style_outputs) is not list or len(style_outputs) != len(self.style_layers):
             raise TypeError(
                 "style_outputs must be a list with a length of {}".format(
-                    length))
-        weight = 1 / length
-        style_cost = 0
-        for i in range(length):
-            style_cost += (
-                self.layer_style_cost(style_outputs[i],
-                                      self.gram_style_features[i]) * weight)
+                    len(self.style_layers)))
+
+        weight = 1.0 / float(len(self.style_layers))
+        style_cost = tf.add_n([self.layer_style_cost(style_outputs[i], self.gram_style_features[i]) * weight
+                               for i in range(len(self.style_layers))])
         return style_cost
