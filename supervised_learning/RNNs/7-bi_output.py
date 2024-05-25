@@ -40,3 +40,25 @@ class BidirectionalCell:
         h_x_concat = np.concatenate((h_prev, x_t), axis=1)
         h_next = np.tanh(np.dot(h_x_concat, self.Whf) + self.bhf)
         return h_next
+
+    def backward(self, h_next, x_t):
+        """calculate hidden state in backward direction
+            for one time step
+        h_pev - previous hidden state"""
+        h_x_concat = np.concatenate((h_next, x_t), axis=1)
+        h_pev = np.tanh(np.dot(h_x_concat, self.Whb) + self.bhb)
+        return h_pev
+
+    def output(self, H):
+        """calculate all outputs for RNN
+        H - shape(t, m, 2 * h) all hidden states for both directions
+            excluding initialized states
+        Returns Y - outputs"""
+
+        # output
+        y_lin = np.dot(H, self.Wy) + self.by
+
+        # output with softmax activation
+        Y = np.exp(y_lin) / np.sum(np.exp(y_lin), axis=-1, keepdims=True)
+
+        return Y
