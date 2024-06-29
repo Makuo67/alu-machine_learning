@@ -8,18 +8,18 @@ import numpy as np
 
 def maximization(X, g):
     """
-    calculates the maximization step in the EM algorithm for a GMM
+    calculates the maximization step in the EM algorithm
     Args:
         X: numpy.ndarray of shape (n, d) containing the data set
         g: numpy.ndarray of shape (k, n) containing the posterior
-           probabilities for each data point in each cluster
+           probabilities in each data point in each cluster
     Returns: pi, m, S, or None, None, None on failure
              pi: numpy.ndarray of shape (k,) containing the updated priors
-                 for each cluster
+                  each cluster
              m: numpy.ndarray of shape (k, d) containing the updated centroid
-                means for each cluster
+                means  each cluster
              S: numpy.ndarray of shape (k, d, d) containing the updated
-                covariance matrices for each cluster
+                covariance matrices each cluster
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None, None
@@ -49,7 +49,7 @@ def maximization(X, g):
     for i in range(k):
 
         # Mu components
-        # Needed to adjust dimensions for fitting the covariance
+        # Needed to adjust dimensions fitting the covariance
         mu_up = np.sum((gaussian_components[i, :, np.newaxis] * X), axis=0)
         mu_down = np.sum(gaussian_components[i], axis=0)
         centroid_updated[i] = mu_up / mu_down
