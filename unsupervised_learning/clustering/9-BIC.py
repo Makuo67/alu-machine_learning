@@ -67,7 +67,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         mean_params = k * d
         p = int(cov_params + mean_params + k - 1)
 
-        # Formula for this task BIC = p * ln(n) - 2 * l
+        # Formula: this task BIC = p * ln(n) - 2 * l
         bic = p * np.log(n) - 2 * log_l
         bic_val.append(bic)
 
