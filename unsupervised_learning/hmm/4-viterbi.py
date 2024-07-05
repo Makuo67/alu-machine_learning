@@ -71,4 +71,3 @@ def viterbi(Observation, Emission, Transition, Initial):
         return path, P
     except Exception:
         None, None
-  
